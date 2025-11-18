@@ -92,6 +92,11 @@ export function Navbar() {
               >
                 Nosotros
               </Link>
+              <Link
+               href="#products"
+               className="px-4 py-2 text-sm font-medium text-primary hover:primary transition-all duration-300 rounded-full hover:bg-secondary/50"
+               >Ofertas
+              </Link>
             </nav>
 
             <div className="flex items-center gap-2">
