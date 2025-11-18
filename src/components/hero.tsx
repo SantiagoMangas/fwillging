@@ -11,11 +11,20 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-background to-secondary/30 dark:to-secondary/20 dark:from-black dark:via-black">
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/40 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-secondary/40 rounded-full blur-3xl animate-float-delayed" />
+        <img 
+          src="/DSCN0630.jpg" 
+          alt="Farmacia Willging" 
+          className="w-full h-full object-cover dark:opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-transparent dark:from-black/90 dark:via-black/80" />
+        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-blue-600/20 dark:bg-blue-400/30 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/25 dark:bg-blue-300/35 rounded-full blur-3xl animate-float-delayed" />
       </div>
+      
+      {/* Efecto de fusión hacia abajo */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-secondary/50 to-secondary dark:via-secondary/30 dark:to-black pointer-events-none" />
 
       <div className="container px-6 lg:px-8 py-32 relative z-10">
         <div className="flex flex-col items-center text-center gap-12">
@@ -74,6 +83,39 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+        @keyframes float-delayed {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(20px); }
+        }
+        @keyframes gradient-shift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes gradient-shift-reverse {
+          0% { background-position: 100% 50%; }
+          50% { background-position: 0% 50%; }
+          100% { background-position: 100% 50%; }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+          animation: float-delayed 6s ease-in-out infinite;
+        }
+        .animate-gradient-shift {
+          animation: gradient-shift 3s ease infinite;
+        }
+        .animate-gradient-shift-reverse {
+          animation: gradient-shift-reverse 3s ease infinite;
+        }
+      `}</style>
     </section>
   )
 }

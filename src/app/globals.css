@@ -3,18 +3,20 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: oklch(92.894% 0.02535 140.015);
-  --primary: oklch(0.55 0.12 155);
-  --secondary: oklch(86.692% 0.20485 140.831);
-  --border: oklch(0.92 0.01 140);
+  --background: oklch(98% 0.005 240);
+  --primary: oklch(0.55 0.15 240); /* Azul farmacéutico */
+  --secondary: oklch(0.85 0.08 240); /* Azul claro */
+  --accent: oklch(0.45 0.18 260); /* Azul más vibrante */
+  --border: oklch(0.92 0.01 240);
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: oklch(16.74% 0.01614 156.903);
-  --primary: oklch(0.65 0.14 155);
-  --secondary: oklch(66.628% 0.12754 151.327);
-  --border: oklch(0.25 0.02 155);
+  --background: oklch(0.12 0.02 240);
+  --primary: oklch(0.65 0.18 240);
+  --secondary: oklch(0.25 0.08 240);
+  --accent: oklch(0.55 0.20 260);
+  --border: oklch(0.25 0.02 240);
 }
 
 @theme inline {
@@ -23,6 +25,7 @@
   --color-background: var(--background);
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
   --color-border: var(--border);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -35,15 +38,14 @@
     @apply border-border outline-white/50;
   }
   body {
-    @apply bg-background text-black;
+    @apply bg-background text-black dark:text-white;
   }
 }
 
-/* Added custom animations for interactive elements */
 @layer utilities {
+  /* Animaciones de gradientes */
   @keyframes gradient-shift {
-    0%,
-    100% {
+    0%, 100% {
       background-position: 0% 50%;
     }
     50% {
@@ -52,8 +54,7 @@
   }
 
   @keyframes gradient-shift-reverse {
-    0%,
-    100% {
+    0%, 100% {
       background-position: 100% 50%;
     }
     50% {
@@ -61,10 +62,9 @@
     }
   }
 
-  /* Animaciones más suaves y naturales */
+  /* Animaciones de flotación */
   @keyframes float {
-    0%,
-    100% {
+    0%, 100% {
       transform: translateY(0px) rotate(0deg);
     }
     50% {
@@ -73,8 +73,7 @@
   }
 
   @keyframes float-delayed {
-    0%,
-    100% {
+    0%, 100% {
       transform: translateY(0px) rotate(0deg);
     }
     50% {
@@ -82,6 +81,7 @@
     }
   }
 
+  /* Animaciones de aparición */
   @keyframes fade-in {
     from {
       opacity: 0;
@@ -94,13 +94,37 @@
   }
   
   @keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fadeInUp {
-    animation: fadeInUp 1s ease-out forwards;
+    0% { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    100% { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
   }
 
+  @keyframes slideInRight {
+    0% {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
+    }
+  }
+
+  /* Clases de animación */
   .animate-gradient-shift {
     animation: gradient-shift 4s ease infinite;
   }
@@ -122,7 +146,32 @@
     animation: fade-in 0.8s ease-out;
   }
 
+  .animate-fadeInUp {
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  .animate-slideInRight {
+    animation: slideInRight 0.6s ease-out;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Delays para animaciones escalonadas */
   .animation-delay-150 {
     animation-delay: 150ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-450 {
+    animation-delay: 450ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
   }
 }
