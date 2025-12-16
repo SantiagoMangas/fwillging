@@ -1,126 +1,75 @@
-'use client'
+"use client";
 
-const BRANDS = [
-  { name: 'Bayer', logo: '/bayer-logo-farmaceutico.jpg' },
-  { name: 'Pfizer', logo: '/pfizer-logo-farmaceutico.jpg' },
-  { name: 'Roemmers', logo: '/roemmers-logo-farmaceutico.jpg' },
-  { name: 'Genomma Lab', logo: '/genomma-lab-logo.jpg' },
-  { name: 'La Roche-Posay', logo: '/la-roche-posay-logo.jpg' },
-  { name: 'Vichy', logo: '/vichy-logo-cosmetico.jpg' },
-  { name: 'Eucerin', logo: '/eucerin-logo.jpg' },
-  { name: 'Neutrogena', logo: '/neutrogena-logo.jpg' },
-]
+import Image from 'next/image';
+
+const logosData = [
+  { id: 1 },
+  { id: 2 },
+  { id: 3 },
+  { id: 4 },
+  { id: 5 },
+  { id: 6 },
+  { id: 7 },
+  { id: 8 },
+];
 
 export function Carousel() {
   return (
-    <section className="py-16 sm:py-20 overflow-hidden bg-gradient-to-b from-background to-secondary/20 dark:from-gray-950 dark:to-secondary/10 relative">
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-1/4 w-64 h-64 bg-primary/5 dark:bg-primary/3 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent/5 dark:bg-accent/3 rounded-full blur-3xl" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-10 sm:mb-12 md:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground dark:text-white mb-3 sm:mb-4">
-            Marcas de Confianza
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
-            Trabajamos con las principales marcas farmacéuticas y de cuidado personal
-          </p>
-        </div>
+    <section className="bg-gray-50 border-b pb-16 lg:pb-24">
+      <div className="px-4 md:px-6 lg:px-8 container mx-auto">
+        <div className="flex flex-col items-center gap-8 md:gap-12">
+          <div className="flex max-w-xl flex-col items-center text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              Trusted by 10K+ remote teams
+            </h2>
+          </div>
 
-        <div className="relative">
-          {/* Gradient overlays - más sutiles */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-r from-background dark:from-gray-950 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-l from-background dark:from-gray-950 to-transparent z-10 pointer-events-none" />
-          
-          {/* Carousel container */}
-          <div className="flex gap-8 sm:gap-12 md:gap-16">
-            {/* First set */}
-            <div className="flex gap-8 sm:gap-12 md:gap-16 animate-scroll-smooth">
-              {BRANDS.map((brand, index) => (
-                <div
-                  key={`brand-1-${index}`}
-                  className="flex-shrink-0 w-32 sm:w-40 md:w-48 h-20 sm:h-24 flex items-center justify-center"
-                >
-                  <div className="relative w-full h-full flex items-center justify-center group">
-                    <div className="absolute inset-0 bg-white dark:bg-gray-900/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 blur-xl" />
-                    <img
-                      src={brand.logo || "/placeholder.svg"}
-                      alt={brand.name}
-                      className="relative max-w-full max-h-full object-contain filter grayscale opacity-50 dark:opacity-30 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
+          <div className="relative w-full overflow-hidden">
+            <div 
+              className="flex w-max items-center"
+              style={{
+                animation: 'infinite-scroll 20s linear infinite',
+                willChange: 'transform'
+              }}
+            >
+              {[...logosData, ...logosData].map((logoItem, index) => {
+                const uniqueKey = `logo-wrapper-${logoItem.id}-${index}`;
+                return (
+                  <div
+                    key={uniqueKey}
+                    className="w-48 flex-shrink-0 flex items-center justify-center px-4"
+                  >
+                    <Image 
+                      src="/marcas/Dove_logo.png"
+                      alt="Dove Logo"
+                      width={144}
+                      height={80}
+                      className="w-36 h-auto object-contain"
                     />
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             
-            {/* Second set - exact duplicate for seamless loop */}
-            <div className="flex gap-8 sm:gap-12 md:gap-16 animate-scroll-smooth" aria-hidden="true">
-              {BRANDS.map((brand, index) => (
-                <div
-                  key={`brand-2-${index}`}
-                  className="flex-shrink-0 w-32 sm:w-40 md:w-48 h-20 sm:h-24 flex items-center justify-center"
-                >
-                  <div className="relative w-full h-full flex items-center justify-center group">
-                    <div className="absolute inset-0 bg-white dark:bg-gray-900/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 blur-xl" />
-                    <img
-                      src={brand.logo || "/placeholder.svg"}
-                      alt={brand.name}
-                      className="relative max-w-full max-h-full object-contain filter grayscale opacity-50 dark:opacity-30 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            {/* Third set - for extra smoothness */}
-            <div className="flex gap-8 sm:gap-12 md:gap-16 animate-scroll-smooth" aria-hidden="true">
-              {BRANDS.map((brand, index) => (
-                <div
-                  key={`brand-3-${index}`}
-                  className="flex-shrink-0 w-32 sm:w-40 md:w-48 h-20 sm:h-24 flex items-center justify-center"
-                >
-                  <div className="relative w-full h-full flex items-center justify-center group">
-                    <div className="absolute inset-0 bg-white dark:bg-gray-900/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 blur-xl" />
-                    <img
-                      src={brand.logo || "/placeholder.svg"}
-                      alt={brand.name}
-                      className="relative max-w-full max-h-full object-contain filter grayscale opacity-50 dark:opacity-30 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                </div>
-              ))}
+            {/* Gradiente de máscara en los bordes */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-gray-50 to-transparent" />
+              <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-gray-50 to-transparent" />
             </div>
           </div>
         </div>
-
-        {/* Optional stats or additional info */}
-        <div className="mt-12 sm:mt-16 text-center">
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-500 font-medium">
-            +50 marcas disponibles en farmacia
-          </p>
-        </div>
       </div>
-
-      <style jsx>{`
-        @keyframes scroll-smooth {
-          0% {
+      
+      <style jsx global>{`
+        @keyframes infinite-scroll {
+          from {
             transform: translateX(0);
           }
-          100% {
-            transform: translateX(-100%);
+          to {
+            transform: translateX(calc(-50%));
           }
-        }
-
-        .animate-scroll-smooth {
-          animation: scroll-smooth 30s linear infinite;
-        }
-
-        /* Pause on hover - optional */
-        .animate-scroll-smooth:hover {
-          animation-play-state: paused;
         }
       `}</style>
     </section>
-  )
+  );
 }

@@ -1,121 +1,277 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useState, useEffect } from 'react';
 
-export function Hero() {
-  const [isVisible, setIsVisible] = useState(false)
+function PillShape({
+  className,
+  delay = 0,
+  width = 400,
+  height = 100,
+  rotate = 0,
+  color1 = "#ef4444",
+  color2 = "#ffffff",
+}: {
+  className?: string;
+  delay?: number;
+  width?: number;
+  height?: number;
+  rotate?: number;
+  color1?: string;
+  color2?: string;
+}) {
+  const [mounted, setMounted] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const [animationState, setAnimationState] = useState({
+    opacity: 0,
+    y: -150,
+    rotate: rotate - 15,
+    floatY: 0,
+  });
 
   useEffect(() => {
-    const id = requestAnimationFrame(() => setIsVisible(true))
-    return () => cancelAnimationFrame(id)
-  }, [])
+    setMounted(true);
+    
+    // Detectar dark mode
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkDarkMode();
+    
+    // Observer para detectar cambios en dark mode
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    
+    // Animación inicial
+    const initialTimer = setTimeout(() => {
+      setAnimationState(prev => ({
+        ...prev,
+        opacity: 1,
+        y: 0,
+        rotate: rotate,
+      }));
+    }, delay * 1000);
+
+    // Animación de flotación
+    let floatValue = 0;
+    const floatInterval = setInterval(() => {
+      floatValue += 0.05;
+      setAnimationState(prev => ({
+        ...prev,
+        floatY: Math.sin(floatValue) * 15,
+      }));
+    }, 50);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(floatInterval);
+      observer.disconnect();
+    };
+  }, [delay, rotate]);
+
+  if (!mounted) return null;
+
+  const finalColor1 = color1;
+  const finalColor2 = color2;
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
-        <img 
-          src="/DSCN0630.jpg" 
-          alt="Farmacia Willging" 
-          className="w-full h-full object-cover dark:opacity-40"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-transparent dark:from-black/90 dark:via-black/80" />
-        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-blue-600/20 dark:bg-blue-400/30 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/25 dark:bg-blue-300/35 rounded-full blur-3xl animate-float-delayed" />
-      </div>
-      
-      {/* Efecto de fusión hacia abajo */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-secondary/50 to-secondary dark:via-secondary/30 dark:to-black pointer-events-none" />
-
-      <div className="container px-6 lg:px-8 py-32 relative z-10">
-        <div className="flex flex-col items-center text-center gap-12">
+    <div
+      className={`absolute ${className}`}
+      style={{
+        opacity: animationState.opacity,
+        transform: `translateY(${animationState.y + animationState.floatY}px) rotate(${animationState.rotate}deg)`,
+        transition: 'opacity 1.2s ease-out, transform 2.4s cubic-bezier(0.23, 0.86, 0.39, 0.96)',
+      }}
+    >
+      <div
+        style={{
+          width,
+          height,
+          position: 'relative',
+        }}
+      >
+        {/* Pastilla con dos colores */}
+        <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl transition-all duration-300">
+          {/* Lado izquierdo con color1 */}
           <div
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/20 backdrop-blur-sm border border-border/50 transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            <span className="text-sm font-medium text-primary/80">Tu farmacia de confianza desde 1985</span>
+            className="absolute left-0 top-0 bottom-0 rounded-l-full"
+            style={{
+              width: '50%',
+              background: finalColor1,
+              borderTopLeftRadius: '9999px',
+              borderBottomLeftRadius: '9999px',
+              boxShadow: isDark 
+                ? '0 10px 40px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 255, 255, 0.1)'
+                : '0 10px 40px rgba(0, 0, 0, 0.2), inset 0 2px 10px rgba(255, 255, 255, 0.3)',
+            }}
+          />
+          
+          {/* Lado derecho con color2 */}
+          <div
+            className="absolute right-0 top-0 bottom-0 rounded-r-full"
+            style={{
+              width: '50%',
+              background: finalColor2,
+              borderTopRightRadius: '9999px',
+              borderBottomRightRadius: '9999px',
+              boxShadow: isDark 
+                ? '0 10px 40px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 255, 255, 0.1)'
+                : '0 10px 40px rgba(0, 0, 0, 0.2), inset 0 2px 10px rgba(255, 255, 255, 0.3)',
+            }}
+          />
+
+          {/* Brillo superior izquierdo */}
+          <div
+            className="absolute top-0 left-0 h-1/3 rounded-tl-full"
+            style={{
+              width: '50%',
+              background: `linear-gradient(180deg, ${isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.4)'} 0%, transparent 100%)`,
+              pointerEvents: 'none',
+            }}
+          />
+          
+          {/* Brillo superior derecho */}
+          <div
+            className="absolute top-0 right-0 h-1/3 rounded-tr-full"
+            style={{
+              width: '50%',
+              background: `linear-gradient(180deg, ${isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.4)'} 0%, transparent 100%)`,
+              pointerEvents: 'none',
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function HeroFarmacia() {
+  const [mounted, setMounted] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkDarkMode();
+    
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const fadeUpStyle = (delay: number) => ({
+    opacity: mounted ? 1 : 0,
+    transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+    transition: `opacity 1s ease-out ${0.5 + delay * 0.2}s, transform 1s cubic-bezier(0.25, 0.4, 0.25, 1) ${0.5 + delay * 0.2}s`,
+  });
+
+  return (
+    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-950 transition-colors duration-500">
+      {/* Degradado suave de fondo */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-transparent to-green-100/30 dark:from-blue-900/20 dark:via-transparent dark:to-green-900/20 transition-colors duration-500" />
+
+      {/* Pastillas flotantes - Responsive */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Pastilla roja/blanca grande - Superior izquierda */}
+        <PillShape
+          delay={0.3}
+          width={400}
+          height={80}
+          rotate={12}
+          color1="#ef4444"
+          color2="#ffffff"
+          className="left-[-30%] sm:left-[-10%] md:left-[-5%] top-[15%] sm:top-[15%] md:top-[20%]"
+        />
+
+        {/* Pastilla amarilla/blanca pequeña - Superior derecha */}
+        <PillShape
+          delay={0.6}
+          width={200}
+          height={60}
+          rotate={20}
+          color1="#f59e0b"
+          color2="#ffffff"
+          className="right-[-10%] sm:right-[15%] md:right-[20%] top-[18%] sm:top-[10%] md:top-[15%]"
+        />
+
+        {/* Pastilla rosa/blanca - Izquierda centro */}
+        <PillShape
+          delay={0.7}
+          width={150}
+          height={40}
+          rotate={-25}
+          color1="#ec4899"
+          color2="#ffffff"
+          className="left-[-5%] sm:left-[20%] md:left-[25%] top-[35%] sm:top-[15%] md:top-[30%]"
+        />
+
+        {/* Pastilla verde/blanca - Inferior derecha */}
+        <PillShape
+          delay={0.5}
+          width={400}
+          height={100}
+          rotate={-15}
+          color1="#10b981"
+          color2="#ffffff"
+          className="right-[-20%] sm:right-[-5%] md:right-[0%] bottom-[15%] sm:bottom-[20%] md:top-[75%]"
+        />
+
+        {/* Pastilla azul/blanca - Inferior izquierda */}
+        <PillShape
+          delay={0.4}
+          width={300}
+          height={80}
+          rotate={-8}
+          color1="#3b82f6"
+          color2="#ffffff"
+          className="left-[-10%] sm:left-[5%] md:left-[10%] bottom-[2%] md:bottom-[10%]"
+        />
+      </div>
+
+      {/* Contenido principal */}
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Badge */}
+          <div style={fadeUpStyle(0)}>
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-blue-200 dark:border-blue-800 mb-6 sm:mb-8 md:mb-12 shadow-lg transition-colors duration-300">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-200 font-medium tracking-wide">Tu salud, nuestra prioridad</span>
+            </div>
           </div>
 
-          <div
-            className={`transition-all duration-1000 delay-150 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
-          >
-            <h1 className="text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tighter text-balance">
-              <span className="block bg-gradient-to-br from-primary via-secondary to-primary bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent">
-                Farmacia
-              </span>
-              <span className="bg-gradient-to-br from-secondary via-primary to-secondary bg-[length:200%_auto] animate-gradient-shift-reverse bg-clip-text text-transparent">
+          {/* Título */}
+          <div style={fadeUpStyle(1)}>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 tracking-tight">
+              <span className="text-blue-600 dark:text-blue-400 transition-colors duration-300">Farmacia</span>
+              <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 via-blue-700 to-blue-600 dark:from-green-400 dark:via-blue-500 dark:to-blue-400 font-serif italic">
                 Willging
               </span>
             </h1>
           </div>
 
-          <p
-            className={`text-xl md:text-2xl text-gray-400 leading-relaxed text-balance max-w-2xl transition-all duration-1000 delay-300 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
-          >
-            Experiencia, compromiso y cercanía al servicio de tu salud y bienestar
-          </p>
-
-          <div
-            className={`mt-16 flex flex-col items-center gap-2 animate-float transition-all duration-1000 delay-500 ${
-              isVisible ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <span className="text-xs text-gray-400 font-medium tracking-wider uppercase">Descubre más</span>
-            <svg
-              className="w-5 h-5 text-gray-400"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
+          {/* Subtítulo */}
+          <div style={fadeUpStyle(2)}>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-10 md:mb-12 leading-relaxed font-light tracking-wide max-w-2xl mx-auto px-2 sm:px-4 transition-colors duration-300">
+              Experiencia, compromiso y cercanía al servicio de tu salud y bienestar
+            </p>
           </div>
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        @keyframes float-delayed {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(20px); }
-        }
-        @keyframes gradient-shift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        @keyframes gradient-shift-reverse {
-          0% { background-position: 100% 50%; }
-          50% { background-position: 0% 50%; }
-          100% { background-position: 100% 50%; }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .animate-float-delayed {
-          animation: float-delayed 6s ease-in-out infinite;
-        }
-        .animate-gradient-shift {
-          animation: gradient-shift 3s ease infinite;
-        }
-        .animate-gradient-shift-reverse {
-          animation: gradient-shift-reverse 3s ease infinite;
-        }
-      `}</style>
-    </section>
-  )
+      {/* Degradado inferior */}
+      <div className="absolute inset-x-0 bottom-0 h-24 sm:h-32 bg-gradient-to-t from-white dark:from-gray-900 via-white/50 dark:via-gray-900/50 to-transparent pointer-events-none transition-colors duration-500" />
+    </div>
+  );
 }
