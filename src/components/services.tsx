@@ -56,10 +56,10 @@ export function Services() {
     <section
       ref={sectionRef}
       id="servicios"
-      className="flex justify-center w-full pt-0 pb-16 sm:pb-20 md:pb-24 lg:pb-32 bg-gradient-to-b from-secondary/30 via-background to-background dark:from-secondary/20 dark:via-black dark:to-black relative overflow-hidden"
+      className="flex justify-center w-full pt-0 pb-16 sm:pb-20 md:pb-24 lg:pb-32 bg-gradient-to-t from-blue-50 via-white to-green-50 dark:from-blue-950 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden"
     >
       {/* Efecto de fusión desde arriba */}
-      <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-secondary/30 to-transparent dark:from-secondary/20 dark:to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-secondary/70 to-transparent dark:from-secondary/70 dark:to-transparent pointer-events-none" />
       
       {/* Efectos visuales sutiles */}
       <div className="absolute top-1/3 left-10 w-72 h-72 bg-blue-600/10 dark:bg-blue-400/10 rounded-full blur-3xl" />
@@ -69,7 +69,7 @@ export function Services() {
         <div className="flex flex-col gap-12 sm:gap-14 md:gap-16 items-center pt-16 sm:pt-20 md:pt-24 lg:pt-32">
 
           <div className="flex flex-col gap-3 sm:gap-4 max-w-2xl text-center">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-balance text-foreground dark:text-white">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-balance text-foreground dark:text-white font-light">
               Lo que hacemos por vos
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed px-4">
@@ -89,7 +89,7 @@ export function Services() {
                   {service.number}
                 </span>
 
-                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                <h3 className="text-xl sm:text-2xl text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 font-light">
                   {service.title}
                 </h3>
 

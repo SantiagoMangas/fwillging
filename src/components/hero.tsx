@@ -180,7 +180,6 @@ export default function HeroFarmacia() {
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-950 transition-colors duration-500">
       {/* Degradado suave de fondo */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-transparent to-green-100/30 dark:from-blue-900/20 dark:via-transparent dark:to-green-900/20 transition-colors duration-500" />
-
       {/* Pastillas flotantes - Responsive */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Pastilla roja/blanca grande - Superior izquierda */}
@@ -271,7 +270,7 @@ export default function HeroFarmacia() {
       </div>
 
       {/* Degradado inferior */}
-      <div className="absolute inset-x-0 bottom-0 h-24 sm:h-32 bg-gradient-to-t from-white dark:from-gray-900 via-white/50 dark:via-gray-900/50 to-transparent pointer-events-none transition-colors duration-500" />
+      <div className="absolute inset-x-0 bottom-0 h-24 sm:h-32 bg-gradient-to-t from-secondary/70 dark:from-secondary  via-secondary/50 dark:via-secondary/50 to-transparent dark:to-transparent pointer-events-none" />
     </div>
   );
 }
