@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { ShoppingBag } from 'lucide-react'
+import { Instagram } from 'lucide-react'
 
 const PRODUCTS = [
   {
@@ -73,17 +73,16 @@ export function Products() {
     <section 
       ref={sectionRef}
       id="products" 
-      className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 bg-white dark:bg-gray-950"
+      className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 bg-gradient-to-t from-secondary/30 via-white to-green-50 dark:from-blue-950 dark:via-gray-800 dark:to-gray-950"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Header minimalista */}
         <div className="text-center mb-12 sm:mb-16 space-y-3 sm:space-y-4">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-light text-gray-900 dark:text-white">
-            Productos destacados
+            Productos destacados 
           </h2>
           
           <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 max-w-xl mx-auto font-light">
-            Selección especial con los mejores precios del mes
+            Selección especial con los mejores precios del mes para vos!
           </p>
         </div>
 
@@ -95,10 +94,8 @@ export function Products() {
                 visibleProducts.includes(index) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
               }`}
             >
-              {/* Card minimalista y limpia */}
               <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 transition-all duration-300">
                 
-                {/* Image con badge integrado */}
                 <div className="relative aspect-square bg-gray-50 dark:bg-gray-800 overflow-hidden">
                   <img
                     src={product.image || "/placeholder.svg"}
@@ -106,7 +103,6 @@ export function Products() {
                     className="w-full h-full object-cover"
                   />
                   
-                  {/* Badge minimalista */}
                   <div className="absolute top-3 right-3">
                     <div className="bg-blue-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">
                       -{product.discount}%
@@ -114,7 +110,6 @@ export function Products() {
                   </div>
                 </div>
 
-                {/* Content limpio */}
                 <div className="p-4 sm:p-5 space-y-3">
                   <div className="space-y-1.5">
                     <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white leading-snug">
@@ -126,7 +121,6 @@ export function Products() {
                     </p>
                   </div>
 
-                  {/* Prices simple */}
                   <div className="flex items-baseline gap-2 pt-1">
                     <span className="text-xs text-gray-400 line-through font-light">
                       ${product.originalPrice.toLocaleString()}
@@ -136,9 +130,8 @@ export function Products() {
                     </span>
                   </div>
 
-                  {/* Button delicado */}
                   <button className="w-full mt-3 py-2.5 bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-medium transition-colors duration-200 active:bg-blue-100 dark:active:bg-blue-900 flex items-center justify-center gap-2">
-                    <ShoppingBag className="w-4 h-4" />
+                    <Instagram className="w-4 h-4" />
                     Consultar disponibilidad
                   </button>
                 </div>
